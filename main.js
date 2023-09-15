@@ -21,8 +21,6 @@ loader.load("models/exterior.gltf", function(gltf) {
   // TIMELINE
 const tl = gsap.timeline({defaults: {duration: 1} })
 tl.fromTo(root.scale, {z:0, x:0, y:0}, {z: 0.20, x: 0.20, y: 0.20})
-tl.fromTo('nav', {y: '-100%'}, {y: '0%'})
-tl.fromTo('.title', {opacity: 0}, {opacity: 1})
 })
 
 //Create a sphere
@@ -51,6 +49,8 @@ scene.add(camera)
 //Renderer
 const canvas = document.querySelector('.webgl')
 const renderer = new THREE.WebGLRenderer({canvas})
+const backgroundColor = new THREE.Color(0xffffff);
+renderer.setClearColor(backgroundColor);
 renderer.setSize(sizes.width, sizes.height)
 renderer.render(scene, camera)
 renderer.setPixelRatio(2)

@@ -73,6 +73,15 @@ window.addEventListener("resize", () => {
     camera.updateProjectionMatrix()
     renderer.setSize(sizes.width, sizes.height)
   })
+
+  // window.addEventListener('mouseup', function() {
+  //   gsap.to(camera.position, {
+  //     x:-3,
+  //     y:0,
+  //     z:0,
+  //     duration: 2
+  //   });
+  // });
   
   const loop = () => {
     controls.update()
