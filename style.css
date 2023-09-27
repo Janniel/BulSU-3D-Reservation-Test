@@ -12,11 +12,11 @@
   background: var(--bg);
 }
 
-/* body,html{
+body,html{
   overflow-x: hidden;
-  overflow-y: hidden;
-  font-family: "Poppins", sans-serif;
-} */
+  /* overflow-y: hidden;
+  font-family: "Poppins", sans-serif; */
+}
 
 /* Navigation Bar */
 :root {
@@ -184,14 +184,14 @@
   top: 30%; /* Adjust this value to move the positioned div up and down */
   font-weight: bold;
   color: whitesmoke;
-  width: 75%; /* Set the width of the positioned div */
+  width: 30%; /* Set the width of the positioned div */
 }
 
 #parallax-home-text-lib {
   position: absolute;
   color: #ffffff;
   text-align: center;
-  margin-top: 3%;
+  margin-top: 5%;
   left: -10%;
   font-size: 9.5vw;
   font-family: "Archivo Black", "Times New Roman", Times, serif;
@@ -201,8 +201,8 @@
   position: absolute;
   color: #ffffff;
   text-align: center;
-  margin-top: 5.5%;
-  left: 7%;
+  margin-top: 3.5%;
+  left: 10%;
   font-size: 1.5vw;
   font-family: "Archivo Black", "Times New Roman", Times, serif;
 }
@@ -211,8 +211,8 @@
   position: absolute;
   color: #ffffff;
   text-align: center;
-  margin-top: 28%;
-  left: 70%;
+  margin-top: 40%;
+  left: 25%;
   font-size: 1.9vw;
   font-family: "Playfair Display", "Times New Roman", Times, serif;
   opacity: 60%;
