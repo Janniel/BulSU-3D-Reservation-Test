@@ -232,13 +232,13 @@ body,html{
 
 .seats {
   z-index: 4;
-  padding-top: 20px;
+  /* padding-top: 20px; */
   position: relative;
   height: 46vh;
-  width: 45%;
-  float: left;
+  /* width: 45%;
+  float: left; */
   text-align: center;
-  margin-top: 50px;
+  /* margin-top: 50px; */
 }
 
 #no {

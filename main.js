@@ -18,6 +18,8 @@ loader.load("models/exterior.gltf", function(gltf) {
 
   scene.add(root)
 
+  
+
   // TIMELINE
 const tl = gsap.timeline({defaults: {duration: 1} })
 tl.fromTo(root.scale, {z:0, x:0, y:0}, {z: 0.20, x: 0.20, y: 0.20})
