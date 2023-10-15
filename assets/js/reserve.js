@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import "./style2.css"
+import "../css/reserve.css"
 import gsap from "gsap"
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls'
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader'
@@ -12,7 +12,7 @@ const scene = new THREE.Scene()
 //GLTF Loader
 const loader = new GLTFLoader()
 let gltfmodel;
-loader.load("models/interior final.glb", function(gltf) {
+loader.load("assets/models/interior final.glb", function(gltf) {
   console.log(gltf)
   gltfmodel = gltf.scene
   gltfmodel.scale.set(1,1,1)
@@ -20,8 +20,8 @@ loader.load("models/interior final.glb", function(gltf) {
   scene.add(gltfmodel)
 
   window.addEventListener('mouseup', function() {
-    console.log(camera.position)
-    console.log(controls.target)
+    console.log(('Camera Position: '), camera.position)
+    console.log(('Controls Target: '), controls.target)
   })
 
 // TIMELINE
@@ -85,7 +85,17 @@ window.addEventListener("resize", () => {
 
 const explore = document.querySelector(".explore");
 const titlediv = document.querySelector(".container");
+
 const tooltip = document.querySelector(".tooltip")
+const tooltipHeading = tooltip.querySelector('h2');
+const tooltipParagraph = tooltip.querySelector('p');
+tooltip.style.display = 'none'
+
+const sectionNav = document.querySelector(".section-nav")
+const section1 = sectionNav.querySelector(".section1")
+const section2 = sectionNav.querySelector(".section2")
+const section3 = sectionNav.querySelector(".section3")
+const section4 = sectionNav.querySelector(".section4")
 
 explore.addEventListener("click", ()=> {
   moveCamera(-1.46, 0.44, -0.17)
@@ -94,7 +104,42 @@ explore.addEventListener("click", ()=> {
   titlediv.classList.add("hidden")
   controls.minPolarAngle = Math.PI / 10;
   controls.maxPolarAngle = (2 * Math.PI) / 3.8;
+  showtip()
+  showsection()
 })
+
+section1.addEventListener("click", () => {
+  console.log('Clicked on the 1st Section');
+  moveTarget(-2.37, 0.12, -0.899)
+  moveCamera(-2.05, 0.14, -0.249)
+  controls.minPolarAngle = Math.PI / 10;
+  controls.maxPolarAngle = (2 * Math.PI) / 3.8;
+})
+
+section2.addEventListener("click", () => {
+  console.log('Clicked on the 2nd Section');
+  moveTarget(0.12, 0.03, 0.168)
+  moveCamera(0.60, 0.157, -0.979)
+  controls.minPolarAngle = Math.PI / 10;
+  controls.maxPolarAngle = (2 * Math.PI) / 3.8;
+})
+
+section3.addEventListener("click", () => {
+  console.log('Clicked on the 3rd Section');
+  moveTarget(2.11, 0.036, 0.02)
+  moveCamera(2.445, 0.13, 0.494)
+  controls.minPolarAngle = Math.PI / 10;
+  controls.maxPolarAngle = (2 * Math.PI) / 3.8;
+})
+
+section4.addEventListener("click", () => {
+  console.log('Clicked on the 4th Section');
+  moveTarget(2.51, 0.10, -1.148)
+  moveCamera(2.467, 0.448, -0.332)
+  controls.minPolarAngle = Math.PI / 10;
+  controls.maxPolarAngle = (2 * Math.PI) / 3.8;
+})
+
 
 function moveCamera(x,y,z) {
   gsap.to(camera.position, {
@@ -129,6 +174,19 @@ function showtitle () {
   titlediv.style.display = "block"
   const tl2 = gsap.timeline({defaults: {duration: 1.5} })
   tl2.fromTo(titlediv, {x: "-100%"}, {x:"0%"})
+}
+
+function showsection () {
+  sectionNav.style.display = "block"
+  sectionNav.style.opacity = "1"
+  const tl3 = gsap.timeline({defaults: {duration: 1.5, delay: 2} })
+  tl3.fromTo(sectionNav, {x: "-100%"}, {x:"0%"})
+}
+
+function showtip () {
+  tooltip.style.display = "block"
+  const tl4 = gsap.timeline({defaults: {delay: 6} })
+  tl4.fromTo(tooltip, {opacity:0}, {opacity:1})
 }
 
   //Animate
@@ -184,16 +242,29 @@ function showtitle () {
   window.addEventListener('click', performRaycasting);
 
 
-  function performRaycasting2(event) {
+  function showTooltip(event, paragraphText, headingText) {
+    tooltipHeading.textContent = headingText;
+    tooltipParagraph.textContent = paragraphText;
+    tooltip.style.opacity = '1'
+    tooltip.style.transform = 'translateY(0px)'
+  }
+
+  function hideTooltip() {
+    tooltip.style.opacity = '0'
+    tooltip.style.transform = 'translateY(-10px)'
+    tooltip.style.pointerEvents = 'none'
+  }
+  
+  window.addEventListener('mousemove', (event) => {
     const mouse = new THREE.Vector2();
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-  
+
     const raycaster = new THREE.Raycaster();
     raycaster.setFromCamera(mouse, camera);
   
     const intersects = raycaster.intersectObject(gltfmodel, true);
-  
+
     if (intersects.length > 0) {
       const selectedObject = intersects[0].object;
       const objectName = selectedObject.name;
@@ -202,27 +273,83 @@ function showtitle () {
 
       case '1_CompChair_1':
         console.log('Clicked on the 1_CompChair_1 object');
-        tooltip.className = 'tooltip show'
-        tooltip.textContent = 'Seat #1'
+        showTooltip(event, 'Click to reserve seat', 'SEAT L1');
         break;
       
       case '1_CompChair_2':
         console.log('Clicked on the 1_CompChair_2 object');
-        tooltip.className = 'tooltip show'
-        tooltip.textContent = 'Seat #2'
+        showTooltip(event, 'Click to reserve seat', 'SEAT L2');
         break;
       
       case '1_CompChair_3':
         console.log('Clicked on the 1_CompChair_3 object');
-        tooltip.className = 'tooltip show'
-        tooltip.textContent = 'Seat #3'
+        showTooltip(event, 'Click to reserve seat', 'SEAT L3');
         break;
-        
+
+      case '1_CompChair_4':
+        console.log('Clicked on the 1_CompChair_4 object');
+        showTooltip(event, 'Click to reserve seat', 'SEAT L4');
+        break;
+
+        case '1_CompChair_5':
+        console.log('Clicked on the 1_CompChair_5 object');
+        showTooltip(event, 'Click to reserve seat', 'SEAT L5');
+        break;
+
+        case '2_CompChair_1':
+        console.log('Clicked on the 2_CompChair_1 object');
+        showTooltip(event, 'Click to reserve seat', 'SEAT K1');
+        break;
+
+        case '2_CompChair_2':
+        console.log('Clicked on the 2_CompChair_2 object');
+        showTooltip(event, 'Click to reserve seat', 'SEAT K2');
+        break;
+
+        case '2_CompChair_3':
+        console.log('Clicked on the 2_CompChair_3 object');
+        showTooltip(event, 'Click to reserve seat', 'SEAT K3');
+        break;
+
+        case '2_CompChair_4':
+        console.log('Clicked on the 2_CompChair_4 object');
+        showTooltip(event, 'Click to reserve seat', 'SEAT K4');
+        break;
+
+        case '2_CompChair_5':
+        console.log('Clicked on the 2_CompChair_5 object');
+        showTooltip(event, 'Click to reserve seat', 'SEAT K5');
+        break;
+
+        case '3_CompChair_1':
+        console.log('Clicked on the 3_CompChair_1 object');
+        showTooltip(event, 'Click to reserve seat', 'SEAT J1');
+        break;
+
+        case '3_CompChair_2':
+        console.log('Clicked on the 3_CompChair_2 object');
+        showTooltip(event, 'Click to reserve seat', 'SEAT J2');
+        break;
+
+        case '3_CompChair_3':
+        console.log('Clicked on the 3_CompChair_3 object');
+        showTooltip(event, 'Click to reserve seat', 'SEAT J3');
+        break;
+
+        case '3_CompChair_4':
+        console.log('Clicked on the 3_CompChair_4 object');
+        showTooltip(event, 'Click to reserve seat', 'SEAT J4');
+        break;
+
+        case '3_CompChair_5':
+        console.log('Clicked on the 3_CompChair_5 object');
+        showTooltip(event, 'Click to reserve seat', 'SEAT J5');
+        break;
+
       default:
-        tooltip.className = 'tooltip hide'
+        hideTooltip()
         break;
       }
     }
-  }
   
-  window.addEventListener('mousemove', performRaycasting2);
+  });

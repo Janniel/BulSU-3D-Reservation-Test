@@ -1,38 +1,68 @@
-<!-- <?php
-        session_start();
-        require 'assets/php/connect.php';
-        require 'assets/php/session.php';
-        ?> -->
+<?php
+session_start();
+require 'assets/php/connect.php';
+require 'assets/php/session.php';
+require 'assets/php/occupancy_timer.php';
+
+?>
 
 
-<!DOCTYPE html>
-<html lang="en">
+<!-- <?php if (
+            !isset($_SESSION["user_id"]) && !isset($_SESSION["password"]) && !isset($_SESSION["first_name"])
+            && !isset($_SESSION["last_name"])
+        ) {
+            echo '<style type="text/css">
+       .header-navigation #hidden{
+           display: none;
+       }
+
+       .header-navigation #show{
+        display: block;
+       }
+      </style>';
+        } else {
+
+            echo '<style type="text/css">
+       .header-navigation #hidden{
+           display: block;
+       }
+
+       .header-navigation #show{
+        display: none;
+       }
+      </style>';
+        }; ?> -->
+
+<!DOCTYPE HTML>
+<html>
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
     <title>Home</title>
+
+    <!------------------------ Bootstrap 5 ------------------------>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+
+    <!------------------------ CSS Link ------------------------>
+    <link rel="stylesheet" type="text/css" href="assets/css/home.css" />
+
+    <!------------------------ For NAV-BAR ------------------------>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
     <!------------------------ Google Fonts Used ------------------------>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 
-    <!------------------------ Bootstrap 5 ------------------------>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-
-    <!------------------------ For NAV-BAR ------------------------>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-
-    <!------------------------ animation on scroll ------------------------>
+    <!-- animation on scroll -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-
 </head>
 
 <body>
+
+
+
 
     <script>
         AOS.init();
@@ -42,29 +72,9 @@
 
         <!------------------------ HEADER --------------------->
 
-        <!-- <?php include 'assets/php/header.php'; ?> -->
-
-        <!-- <header class="header-outer">
-            <div class="header-inner responsive-wrapper">
-              <div class="header-logo">
-                <img src="assets/img/elib logo.png" class="icon">
-              </div>
-              <nav class="header-navigation">
-                <a href="">HOME</a>
-                <a href="">ABOUT US</a>
-                <a href="">RESERVE SEAT</a>
-                <a id="hidden" href="">OCCUPY SEAT</a>
-              
-                <a id="hidden" href="">ACCOUNT</a>
-                <a id="hidden" href="">LOGOUT</a>
-                <a id="show" href="login.php" >LOGIN</a>
-              </nav>
-            </div>
-            </header> -->
+        <?php include 'assets/php/header.php'; ?>
 
         <!------------------------ END HEADER --------------------->
-
-
         <!------------------------ COVER ------------------------>
         <div id="home" class="parallax-home">
             <img class="banner" src="assets/img/lib building_bg.jpg" id="lib-front">
@@ -79,93 +89,119 @@
 
 
         <!------------------------ SEAT INFO ------------------------>
+        <canvas class="webgl"></canvas>
 
-        <div class="webgl-container">
-            <canvas class="webgl"></canvas>
-                <div class="seats" data-aos="fade-right">
+        <div class="seats" data-aos="fade-right">
+            <div class="no-of-seats">
+                <h1 id="no">206</h1>
+                <h1 id="avail">Available Seats</h1>
+            </div>
+            <a href="reserve.html" class="reserve-btn btn">
+                Reserve seat
+            </a>
+        </div>
 
-                    <div class="no-of-seats">
-                    <h1 id="no">206</h1>
-                    <h1 id="avail">Available Seats</h1>
-                    </div>
-                    <a href="reserve.html" class="reserve-btn btn">Reserve seat</a>
+        <div class="col" id="clock">
+            <div class="clock">
+                <div class="hour">
+                    <div class="hr" id="hr"></div>
                 </div>
+                <div class="min">
+                    <div class="mn" id="mn"></div>
+                </div>
+                <div class="sec">
+                    <div class="sc" id="sc"></div>
+                </div>
+            </div>
         </div>
 
         <!------------------------ END OF SEAT INFO ------------------------>
 
+        <div class="col-2" id="aboutus">
+            <h2>ABOUT US</h2>
+            <p>
+                The Bulacan State University Library, through its resources, facility, and staff, is dedicated to
+                providing open
+                access to information and to offering the services and tools with which to locate and interpret that
+                information. As patrons’ needs and information technologies continue to evolve, so will the means
+                with which the
+                Library attempts to fulfill its role within the community.
+            </p>
+        </div>
 
-        <!-- ---------------------- NEWS SLIDER ------------------------>
-        <!-- <div id="my-carousel" class="carousel slide" data-bs-ride="carousel" data-bs-ride="true" data-aos="fade-left">
-    <div class="carousel-indicators">
-        <button type="button" data-bs-target="#my-carousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-        <button type="button" data-bs-target="#my-carousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-        <button type="button" data-bs-target="#my-carousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
-        <button type="button" data-bs-target="#my-carousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
-    </div>
-    <div class="carousel-inner">
-        <div class="carousel-item active c-item">
-            <img src="assets/img/elib1.jpg" class="d-block w-100 c-img" alt="...">
-            <div class="carousel-caption">
-                <h3>First slide label</h3>
-                <p>Some representative placeholder content for the first slide.</p>
-                <a href="" class="btn btn-lg btn-primary ">
-                    Read More
-                </a>
-            </div>
-        </div>
-        <div class="carousel-item c-item">
-            <img class="d-block w-100 c-img" src="assets/img/elib2.jpg" alt="Second slide">
-            <div class="carousel-caption">
-                <h3>First slide label</h3>
-                <p>Some representative placeholder content for the first slide.</p>
-                <a href="" class="btn btn-lg btn-primary">
-                    Read More
-                </a>
-            </div>
-        </div>
-        <div class="carousel-item c-item">
-            <img class="d-block w-100 c-img" src="assets/img/elib3.jpg" alt="Third slide">
-            <div class="carousel-caption">
-                <h3>First slide label</h3>
-                <p>Some representative placeholder content for the first slide.</p>
-                <a href="" class="btn btn-lg btn-primary">
-                    Read More
-                </a>
-            </div>
-        </div>
-    </div>
 
-    <button class="carousel-control-prev" type="button" data-bs-target="#my-carousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#my-carousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-    </button>
-</div> -->
-        <!------------------------ END OF NEWS SLIDER ---------------------- -->
+        <!------------------------ NEWS SLIDER ------------------------>
+        <!--<div id="my-carousel" class="carousel slide" data-bs-ride="carousel" data-bs-ride="true" data-aos="fade-left">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#my-carousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#my-carousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#my-carousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                <button type="button" data-bs-target="#my-carousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
+
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active c-item">
+                    <img src="assets/img/elib1.jpg" class="d-block w-100 c-img" alt="...">
+                    <div class="carousel-caption">
+                        <h3>First slide label</h3>
+                        <p>Some representative placeholder content for the first slide.</p>
+                        <a href="" class="btn btn-lg btn-primary ">
+                            Read More
+                        </a>
+                    </div>
+                </div>
+                <div class="carousel-item c-item">
+                    <img class="d-block w-100 c-img" src="assets/img/elib2.jpg" alt="Second slide">
+                    <div class="carousel-caption">
+                        <h3>First slide label</h3>
+                        <p>Some representative placeholder content for the first slide.</p>
+                        <a href="" class="btn btn-lg btn-primary">
+                            Read More
+                        </a>
+                    </div>
+                </div>
+                <div class="carousel-item c-item">
+                    <img class="d-block w-100 c-img" src="assets/img/elib3.jpg" alt="Third slide">
+                    <div class="carousel-caption">
+                        <h3>First slide label</h3>
+                        <p>Some representative placeholder content for the first slide.</p>
+                        <a href="" class="btn btn-lg btn-primary">
+                            Read More
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#my-carousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#my-carousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+        <!------------------------ END OF NEWS SLIDER ------------------------>
 
 
         <!------------------------ ABOUT US ------------------------>
-        <div class="abtus" id="aboutus">
-  <div class="col-1">
-      <img src="assets/img/elib0.jpg">
+        <!--<div class="abtus" id="aboutus" data-aos="fade-up">
+            <div class="col-1">
+                <img src="assets/img/elib0.jpg">
 
-  </div>
-  <div class="col-2">
-      <h2>BULACAN STATE UNIVERSITY LIBRARY</h2>
-      <p>
-          The Bulacan State University Library, through its resources, facility, and staff, is dedicated to
-          providing open
-          access to information and to offering the services and tools with which to locate and interpret that
-          information. As patrons’ needs and information technologies continue to evolve, so will the means
-          with which the
-          Library attempts to fulfill its role within the community.
-      </p>
-  </div>
-</div>
+            </div>
+            <div class="col-2">
+                <h2>BULACAN STATE UNIVERSITY LIBRARY</h2>
+                <p>
+                    The Bulacan State University Library, through its resources, facility, and staff, is dedicated to
+                    providing open
+                    access to information and to offering the services and tools with which to locate and interpret that
+                    information. As patrons’ needs and information technologies continue to evolve, so will the means
+                    with which the
+                    Library attempts to fulfill its role within the community.
+                </p>
+            </div>
+        </div>
         <!------------------------ END OF ABOUT US ------------------------>
 
 
@@ -179,6 +215,11 @@
                     <p class="animate-text">Bulacan State University is a progressive knowledge-generating institution
                         globally recognized for excellent instruction, pioneering research, and responsive community
                         engagements. </p>
+                    <div class="dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
                 </div>
             </div>
 
@@ -212,9 +253,24 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <!------------------------ END OF VMGO ------------------------>
 
+            <div class="tile" data-aos="fade-up" data-aos-duration="2000">
+                <img src='assets/img/inaug2.jpg' />
+                <div class="text">
+                    <h1>Core Values</h1>
+                    <p class="animate-text">S – Service to God and Community.<br>O – Order and Peace.<br>
+                        A – Assurance of Quality and Accountability.<br>R – Respect and Responsibility. </p>
+                    <div class="dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!------------------------ END OF VMGO ------------------------>
 
         <!------------------------ FOOTER ------------------------>
         <footer>
@@ -318,9 +374,13 @@
         </footer>
         <!------------------------ FOOTER ------------------------>
 
+
+
     </div>
 
-    <script type="module" src="/main.js"></script>
+    <script type="module" src="assets/js/home.js"></script>
+    <script src="assets/js/clock.js"></script>
+
 
 </body>
 
@@ -336,7 +396,6 @@
         }
     }, 5000);
 </script>
-
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js" integrity="sha384-zYPOMqeu1DAVkHiLqWBUTcbYfZ8osu1Nd6Z89ify25QV9guujx43ITvfi12/QExE" crossorigin="anonymous">
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js" integrity="sha384-Y4oOpwW3duJdCWv5ly8SCFYWqFDsfob/3GkgExXKV4idmbt98QcxXYs9UoXAB7BZ" crossorigin="anonymous">
